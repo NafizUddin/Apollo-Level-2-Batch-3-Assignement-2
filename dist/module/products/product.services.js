@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductServices = void 0;
+const mongodb_1 = require("mongodb");
 const product_model_1 = require("./product.model");
 const createProductIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield product_model_1.Product.create(payload);
@@ -19,7 +20,12 @@ const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* (
     const result = yield product_model_1.Product.find();
     return result;
 });
+const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.findOne({ _id: new mongodb_1.ObjectId(id) });
+    return result;
+});
 exports.ProductServices = {
     createProductIntoDB,
     getAllProductsFromDB,
+    getSingleProductFromDB,
 };

@@ -51,7 +51,26 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
 });
+const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productId = req.params.productId;
+        const result = yield product_services_1.ProductServices.getSingleProductFromDB(productId);
+        res.status(200).json({
+            success: true,
+            message: 'Product fetched successfully!',
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Oops! Something went wrong!',
+            error: error,
+        });
+    }
+});
 exports.ProductControllers = {
     createProduct,
     getAllProducts,
+    getSingleProduct,
 };
