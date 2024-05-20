@@ -49,7 +49,7 @@ const productSchema = new Schema<TProduct>({
     type: [String],
     required: [true, 'Tag is required'],
     validate: {
-      validator: (tags: String[]) => tags.length <= 10,
+      validator: (tags: string[]) => tags.length <= 10,
       message: 'Tags cannot exceed 10 entries',
     },
   },
