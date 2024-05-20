@@ -12,13 +12,13 @@ const createProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product created successfully',
+      message: 'Product created successfully!',
       data: result,
     });
   } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error.message || 'Oopss! Something went wrong!',
+      message: error.message || 'Oops! Something went wrong!',
       error: error,
     });
   }
@@ -60,8 +60,35 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
+const updateSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const updatedData = req.body;
+    const productId = req.params.productId;
+
+    const zodParsedUpdatedData = productValidationSchema.parse(updatedData);
+
+    const result = await ProductServices.updateSingleProductFromDB(
+      zodParsedUpdatedData,
+      productId,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Oops! Something went wrong!',
+      error: error,
+    });
+  }
+};
+
 export const ProductControllers = {
   createProduct,
   getAllProducts,
   getSingleProduct,
+  updateSingleProduct,
 };
