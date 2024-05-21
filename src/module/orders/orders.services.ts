@@ -6,6 +6,17 @@ const createOrderIntoDB = async (payload: TOrder) => {
   return result;
 };
 
+const getOrdersFromDB = async (email: string) => {
+  if (email) {
+    const result = await Order.find({ email });
+    return result;
+  }
+
+  const result = await Order.find();
+  return result;
+};
+
 export const OrderServices = {
   createOrderIntoDB,
+  getOrdersFromDB,
 };

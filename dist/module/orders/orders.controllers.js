@@ -34,6 +34,59 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
+const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const queryEmail = req.query.email;
+        if (queryEmail) {
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            if (validateEmail(queryEmail)) {
+                // check if the user email exist
+                const result = yield orders_services_1.OrderServices.getOrdersFromDB(queryEmail);
+                if (result.length > 0) {
+                    res.status(200).json({
+                        success: true,
+                        message: `Orders fetched successfully for ${queryEmail}!`,
+                        data: result,
+                    });
+                }
+                else {
+                    res.status(500).json({
+                        success: false,
+                        message: 'Order not found',
+                    });
+                }
+            }
+            else {
+                res.status(500).json({ success: false, message: 'Invalid Email' });
+            }
+        }
+        const result = yield orders_services_1.OrderServices.getOrdersFromDB('');
+        if (result.length > 0) {
+            res.status(200).json({
+                success: true,
+                message: 'Orders fetched successfully!',
+                data: result,
+            });
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: 'Order not found',
+            });
+        }
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Oops! Something went wrong!',
+            error: error,
+        });
+    }
+});
 exports.OrderControllers = {
     createOrder,
+    getOrders,
 };
