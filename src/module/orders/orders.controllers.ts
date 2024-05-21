@@ -14,6 +14,11 @@ const createOrder = async (req: Request, res: Response) => {
         success: false,
         message: 'Product not found',
       });
+    } else if (result === 'stockOut') {
+      res.status(500).json({
+        success: false,
+        message: 'Insufficient quantity available in inventory',
+      });
     } else {
       res.status(200).json({
         success: true,

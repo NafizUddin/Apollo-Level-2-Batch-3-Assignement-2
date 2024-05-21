@@ -20,6 +20,17 @@ const createOrderIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functio
     if (!existProduct) {
         return null;
     }
+    if (existProduct.inventory.quantity <= 0 ||
+        existProduct.inventory.quantity < payload.quantity) {
+        return 'stockOut';
+    }
+    let { inventory: { quantity }, } = existProduct;
+    quantity = quantity - payload.quantity;
+    existProduct.inventory.quantity = quantity;
+    if (quantity === 0) {
+        existProduct.inventory.inStock = false;
+    }
+    const updateResult = yield product_model_1.Product.updateOne({ _id: new mongodb_1.ObjectId(existProduct._id) }, { $set: existProduct });
     const result = yield orders_model_1.Order.create(payload);
     return result;
 });

@@ -11,6 +11,31 @@ const createOrderIntoDB = async (payload: TOrder) => {
   if (!existProduct) {
     return null;
   }
+
+  if (
+    existProduct.inventory.quantity <= 0 ||
+    existProduct.inventory.quantity < payload.quantity
+  ) {
+    return 'stockOut';
+  }
+
+  let {
+    inventory: { quantity },
+  } = existProduct;
+
+  quantity = quantity - payload.quantity;
+
+  existProduct.inventory.quantity = quantity;
+
+  if (quantity === 0) {
+    existProduct.inventory.inStock = false;
+  }
+
+  const updateResult = await Product.updateOne(
+    { _id: new ObjectId(existProduct._id) },
+    { $set: existProduct },
+  );
+
   const result = await Order.create(payload);
   return result;
 };
