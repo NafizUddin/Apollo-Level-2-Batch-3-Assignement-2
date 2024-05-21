@@ -20,11 +20,19 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const orderData = req.body;
         const zodParsedOrderData = orders_zod_validation_1.default.parse(orderData);
         const result = yield orders_services_1.OrderServices.createOrderIntoDB(zodParsedOrderData);
-        res.status(200).json({
-            success: true,
-            message: 'Order created successfully!',
-            data: result,
-        });
+        if (result === null) {
+            res.status(500).json({
+                success: false,
+                message: 'Product not found',
+            });
+        }
+        else {
+            res.status(200).json({
+                success: true,
+                message: 'Order created successfully!',
+                data: result,
+            });
+        }
     }
     catch (error) {
         res.status(500).json({

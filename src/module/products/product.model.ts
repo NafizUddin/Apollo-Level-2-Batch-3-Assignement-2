@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TInventory, TProduct, TProductVariants } from './product.interface';
+import { ObjectId } from 'mongodb';
 
 const productVariantSchema = new Schema<TProductVariants>({
   type: {
@@ -66,5 +67,10 @@ const productSchema = new Schema<TProduct>({
 
 // Creating name field as text search index
 productSchema.index({ name: 'text' });
+
+// productSchema.statics.isProductExists = async function (id: string) {
+//   const existingProduct = await Product.findOne({ _id: new ObjectId(id) });
+//   return existingProduct;
+// };
 
 export const Product = model<TProduct>('Product', productSchema);
