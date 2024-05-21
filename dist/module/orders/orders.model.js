@@ -22,5 +22,5 @@ const orderSchema = new mongoose_1.Schema({
         required: [true, 'Quantity is required'],
         min: [1, 'Quantity must be at least 1'],
     },
-});
+}, { versionKey: false });
 exports.Order = (0, mongoose_1.model)('Order', orderSchema);

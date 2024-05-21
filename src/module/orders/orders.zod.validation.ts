@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const orderSchema = z.object({
+const orderValidationSchema = z.object({
   email: z
     .string()
     .email({ message: 'Please enter a valid email address' })
@@ -12,3 +12,5 @@ const orderSchema = z.object({
 
   quantity: z.number().min(1, { message: 'Quantity must be at least 1' }),
 });
+
+export default orderValidationSchema;
