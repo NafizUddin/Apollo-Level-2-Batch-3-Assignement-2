@@ -16,7 +16,11 @@ const createProductIntoDB = (payload) => __awaiter(void 0, void 0, void 0, funct
     const result = yield product_model_1.Product.create(payload);
     return result;
 });
-const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+const getAllProductsFromDB = (productName) => __awaiter(void 0, void 0, void 0, function* () {
+    if (productName) {
+        const result = yield product_model_1.Product.find({ $text: { $search: productName } });
+        return result;
+    }
     const result = yield product_model_1.Product.find();
     return result;
 });
@@ -24,8 +28,18 @@ const getSingleProductFromDB = (id) => __awaiter(void 0, void 0, void 0, functio
     const result = yield product_model_1.Product.findOne({ _id: new mongodb_1.ObjectId(id) });
     return result;
 });
+const updateSingleProductFromDB = (payload, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.updateOne({ _id: new mongodb_1.ObjectId(id) }, { $set: payload });
+    return result;
+});
+const deleteProductFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.Product.deleteOne({ _id: new mongodb_1.ObjectId(id) });
+    return result;
+});
 exports.ProductServices = {
     createProductIntoDB,
     getAllProductsFromDB,
     getSingleProductFromDB,
+    updateSingleProductFromDB,
+    deleteProductFromDB,
 };

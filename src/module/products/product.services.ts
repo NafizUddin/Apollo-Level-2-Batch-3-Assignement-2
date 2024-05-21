@@ -7,7 +7,12 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
-const getAllProductsFromDB = async () => {
+const getAllProductsFromDB = async (productName: string) => {
+  if (productName) {
+    const result = await Product.find({ $text: { $search: productName } });
+    return result;
+  }
+
   const result = await Product.find();
   return result;
 };
@@ -30,16 +35,10 @@ const deleteProductFromDB = async (id: string) => {
   return result;
 };
 
-const searchProductFromDB = async (productName: string) => {
-  const result = await Product.find({ $text: { $search: productName } });
-  return result;
-};
-
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateSingleProductFromDB,
   deleteProductFromDB,
-  searchProductFromDB,
 };

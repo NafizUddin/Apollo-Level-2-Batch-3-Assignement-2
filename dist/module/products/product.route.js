@@ -10,4 +10,6 @@ const router = express_1.default.Router();
 router.post('/', product_controller_1.ProductControllers.createProduct);
 router.get('/', product_controller_1.ProductControllers.getAllProducts);
 router.get('/:productId', product_controller_1.ProductControllers.getSingleProduct);
+router.put('/:productId', product_controller_1.ProductControllers.updateSingleProduct);
+router.delete('/:productId', product_controller_1.ProductControllers.deleteProduct);
 exports.ProductRoutes = router;

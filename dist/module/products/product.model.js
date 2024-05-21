@@ -62,4 +62,6 @@ const productSchema = new mongoose_1.Schema({
         required: [true, 'Inventory information is required'],
     },
 });
+// Creating name field as text search index
+productSchema.index({ name: 'text' });
 exports.Product = (0, mongoose_1.model)('Product', productSchema);

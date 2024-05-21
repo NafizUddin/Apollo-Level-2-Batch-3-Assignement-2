@@ -3,9 +3,6 @@ import { ProductControllers } from './product.controller';
 
 const router = express.Router();
 
-// For Query (Search Product), Query route should be at top of all routes
-router.get('/', ProductControllers.searchProduct);
-
 router.post('/', ProductControllers.createProduct);
 
 router.get('/', ProductControllers.getAllProducts);

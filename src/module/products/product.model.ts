@@ -64,6 +64,7 @@ const productSchema = new Schema<TProduct>({
   },
 });
 
+// Creating name field as text search index
 productSchema.index({ name: 'text' });
 
 export const Product = model<TProduct>('Product', productSchema);
