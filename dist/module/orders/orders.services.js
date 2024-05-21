@@ -10,12 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderServices = void 0;
-const mongodb_1 = require("mongodb");
 const product_model_1 = require("../products/product.model");
 const orders_model_1 = require("./orders.model");
 const createOrderIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const existProduct = yield product_model_1.Product.findOne({
-        _id: new mongodb_1.ObjectId(payload.productId),
+        _id: payload.productId,
     });
     if (!existProduct) {
         return null;
@@ -30,7 +29,7 @@ const createOrderIntoDB = (payload) => __awaiter(void 0, void 0, void 0, functio
     if (quantity === 0) {
         existProduct.inventory.inStock = false;
     }
-    const updateResult = yield product_model_1.Product.updateOne({ _id: new mongodb_1.ObjectId(existProduct._id) }, { $set: existProduct });
+    const updateResult = yield product_model_1.Product.findOneAndUpdate({ _id: existProduct._id }, existProduct, { new: true });
     const result = yield orders_model_1.Order.create(payload);
     return result;
 });

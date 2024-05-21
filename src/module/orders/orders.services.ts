@@ -5,7 +5,7 @@ import { Order } from './orders.model';
 
 const createOrderIntoDB = async (payload: TOrder) => {
   const existProduct = await Product.findOne({
-    _id: new ObjectId(payload.productId),
+    _id: payload.productId,
   });
 
   if (!existProduct) {
@@ -31,9 +31,10 @@ const createOrderIntoDB = async (payload: TOrder) => {
     existProduct.inventory.inStock = false;
   }
 
-  const updateResult = await Product.updateOne(
-    { _id: new ObjectId(existProduct._id) },
-    { $set: existProduct },
+  const updateResult = await Product.findOneAndUpdate(
+    { _id: existProduct._id },
+    existProduct,
+    { new: true },
   );
 
   const result = await Order.create(payload);

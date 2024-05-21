@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.zodValidation = void 0;
 const zod_1 = require("zod");
 const productVariantValidationSchema = zod_1.z.object({
     type: zod_1.z.string().min(1, 'Variant type is required'),
@@ -27,4 +28,8 @@ const productValidationSchema = zod_1.z.object({
         .min(1, 'Product must have at least one variant'),
     inventory: inventoryValidationSchema,
 });
-exports.default = productValidationSchema;
+const partialProductValidationSchema = productValidationSchema.partial();
+exports.zodValidation = {
+    productValidationSchema,
+    partialProductValidationSchema,
+};

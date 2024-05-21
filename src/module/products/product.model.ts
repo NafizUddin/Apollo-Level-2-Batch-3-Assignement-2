@@ -65,12 +65,7 @@ const productSchema = new Schema<TProduct>({
   },
 });
 
-// Creating name field as text search index
-productSchema.index({ name: 'text' });
-
-// productSchema.statics.isProductExists = async function (id: string) {
-//   const existingProduct = await Product.findOne({ _id: new ObjectId(id) });
-//   return existingProduct;
-// };
+// Creating text search index
+productSchema.index({ name: 'text', description: 'text', category: 'text' });
 
 export const Product = model<TProduct>('Product', productSchema);

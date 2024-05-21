@@ -13,7 +13,3 @@ export type TProduct = {
   variants: TProductVariants[];
   inventory: TInventory;
 };
-
-// export interface ProductModel extends Model<TProduct> {
-//   isProductExists(id: string): Promise<TProduct | null>;
-// }

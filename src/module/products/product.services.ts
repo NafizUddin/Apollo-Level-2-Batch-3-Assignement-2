@@ -18,20 +18,19 @@ const getAllProductsFromDB = async (productName: string) => {
 };
 
 const getSingleProductFromDB = async (id: string) => {
-  const result = await Product.findOne({ _id: new ObjectId(id) });
+  const result = await Product.findOne({ _id: id });
   return result;
 };
 
-const updateSingleProductFromDB = async (payload: TProduct, id: string) => {
-  const result = await Product.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: payload },
-  );
+const updateSingleProductFromDB = async (payload: object, id: string) => {
+  const result = await Product.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
   return result;
 };
 
 const deleteProductFromDB = async (id: string) => {
-  const result = await Product.deleteOne({ _id: new ObjectId(id) });
+  const result = await Product.deleteOne({ _id: id });
   return result;
 };
 

@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductControllers = void 0;
 const product_services_1 = require("./product.services");
-const product_zod_validation_1 = __importDefault(require("./product.zod.validation"));
+const product_zod_validation_1 = require("./product.zod.validation");
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
-        const productParsedData = product_zod_validation_1.default.parse(productData);
+        const productParsedData = product_zod_validation_1.zodValidation.productValidationSchema.parse(productData);
         const result = yield product_services_1.ProductServices.createProductIntoDB(productParsedData);
         res.status(200).json({
             success: true,
@@ -39,11 +36,19 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const queryProduct = req.query.searchTerm;
         if (queryProduct) {
             const result = yield product_services_1.ProductServices.getAllProductsFromDB(queryProduct);
-            res.status(200).json({
-                success: true,
-                message: `Products matching search term '${queryProduct}' fetched successfully!`,
-                data: result,
-            });
+            if (result.length > 0) {
+                return res.status(200).json({
+                    success: true,
+                    message: `Products matching search term '${queryProduct}' fetched successfully!`,
+                    data: result,
+                });
+            }
+            else {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Products not found!',
+                });
+            }
         }
         const result = yield product_services_1.ProductServices.getAllProductsFromDB('');
         res.status(200).json({
@@ -82,7 +87,7 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const updatedData = req.body;
         const productId = req.params.productId;
-        const zodParsedUpdatedData = product_zod_validation_1.default.parse(updatedData);
+        const zodParsedUpdatedData = product_zod_validation_1.zodValidation.partialProductValidationSchema.parse(updatedData);
         const result = yield product_services_1.ProductServices.updateSingleProductFromDB(zodParsedUpdatedData, productId);
         res.status(200).json({
             success: true,

@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.services';
-import productValidationSchema from './product.zod.validation';
+import { zodValidation } from './product.zod.validation';
 
 const createProduct = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
 
-    const productParsedData = productValidationSchema.parse(productData);
+    const productParsedData =
+      zodValidation.productValidationSchema.parse(productData);
 
     const result = await ProductServices.createProductIntoDB(productParsedData);
 
@@ -30,11 +31,18 @@ const getAllProducts = async (req: Request, res: Response) => {
 
     if (queryProduct) {
       const result = await ProductServices.getAllProductsFromDB(queryProduct);
-      res.status(200).json({
-        success: true,
-        message: `Products matching search term '${queryProduct}' fetched successfully!`,
-        data: result,
-      });
+      if (result.length > 0) {
+        return res.status(200).json({
+          success: true,
+          message: `Products matching search term '${queryProduct}' fetched successfully!`,
+          data: result,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Products not found!',
+        });
+      }
     }
 
     const result = await ProductServices.getAllProductsFromDB('');
@@ -76,7 +84,8 @@ const updateSingleProduct = async (req: Request, res: Response) => {
     const updatedData = req.body;
     const productId = req.params.productId;
 
-    const zodParsedUpdatedData = productValidationSchema.parse(updatedData);
+    const zodParsedUpdatedData =
+      zodValidation.partialProductValidationSchema.parse(updatedData);
 
     const result = await ProductServices.updateSingleProductFromDB(
       zodParsedUpdatedData,
