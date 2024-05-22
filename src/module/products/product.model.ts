@@ -5,7 +5,6 @@ import {
   TProduct,
   TProductVariants,
 } from './product.interface';
-import { ObjectId } from 'mongodb';
 
 const productVariantSchema = new Schema<TProductVariants>({
   type: {
