@@ -17,6 +17,12 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const productData = req.body;
         const productParsedData = product_zod_validation_1.zodValidation.productValidationSchema.parse(productData);
         const result = yield product_services_1.ProductServices.createProductIntoDB(productParsedData);
+        if (result === null) {
+            return res.status(400).json({
+                success: false,
+                message: 'Product already exists!',
+            });
+        }
         res.status(200).json({
             success: true,
             message: 'Product created successfully!',

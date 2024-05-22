@@ -60,21 +60,23 @@ const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 // check if the user email exist
                 const result = yield orders_services_1.OrderServices.getOrdersFromDB(queryEmail);
                 if (result.length > 0) {
-                    res.status(200).json({
+                    return res.status(200).json({
                         success: true,
                         message: `Orders fetched successfully for ${queryEmail}!`,
                         data: result,
                     });
                 }
                 else {
-                    res.status(500).json({
+                    return res.status(500).json({
                         success: false,
                         message: 'Order not found',
                     });
                 }
             }
             else {
-                res.status(500).json({ success: false, message: 'Invalid Email' });
+                return res
+                    .status(500)
+                    .json({ success: false, message: 'Invalid Email' });
             }
         }
         const result = yield orders_services_1.OrderServices.getOrdersFromDB('');

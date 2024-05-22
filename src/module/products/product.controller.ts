@@ -11,6 +11,13 @@ const createProduct = async (req: Request, res: Response) => {
 
     const result = await ProductServices.createProductIntoDB(productParsedData);
 
+    if (result === null) {
+      return res.status(400).json({
+        success: false,
+        message: 'Product already exists!',
+      });
+    }
+
     res.status(200).json({
       success: true,
       message: 'Product created successfully!',

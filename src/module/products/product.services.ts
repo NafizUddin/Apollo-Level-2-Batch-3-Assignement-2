@@ -3,6 +3,10 @@ import { TProduct } from './product.interface';
 import { Product } from './product.model';
 
 const createProductIntoDB = async (payload: TProduct) => {
+  if (await Product.isProductExists(payload.name)) {
+    return null;
+  }
+
   const result = await Product.create(payload);
   return result;
 };

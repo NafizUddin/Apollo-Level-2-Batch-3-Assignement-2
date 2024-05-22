@@ -50,19 +50,21 @@ const getOrders = async (req: Request, res: Response) => {
 
         const result = await OrderServices.getOrdersFromDB(queryEmail);
         if (result.length > 0) {
-          res.status(200).json({
+          return res.status(200).json({
             success: true,
             message: `Orders fetched successfully for ${queryEmail}!`,
             data: result,
           });
         } else {
-          res.status(500).json({
+          return res.status(500).json({
             success: false,
             message: 'Order not found',
           });
         }
       } else {
-        res.status(500).json({ success: false, message: 'Invalid Email' });
+        return res
+          .status(500)
+          .json({ success: false, message: 'Invalid Email' });
       }
     }
 
